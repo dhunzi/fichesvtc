@@ -1,0 +1,337 @@
+<title>Confidentialité Fiches VTC</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --text: #1f2933;
+    --muted: #5b6b7c;
+    --border: #e3e8ee;
+    --accent: #1f3a5f;
+    --accent-soft: #e7edf5;
+    --amber: #b86e00;
+    --amber-soft: #fbf1e2;
+    --good: #0f6b4b;
+    --good-soft: #e6f4ee;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10141b;
+      --surface: #171d27;
+      --surface-raised: #1d2430;
+      --text: #e7ecf3;
+      --muted: #94a3b6;
+      --border: #2a3441;
+      --accent: #9dc0ee;
+      --accent-soft: #1e2c40;
+      --amber: #ffbd66;
+      --amber-soft: #302410;
+      --good: #7fd6b4;
+      --good-soft: #123027;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10141b;
+    --surface: #171d27;
+    --surface-raised: #1d2430;
+    --text: #e7ecf3;
+    --muted: #94a3b6;
+    --border: #2a3441;
+    --accent: #9dc0ee;
+    --accent-soft: #1e2c40;
+    --amber: #ffbd66;
+    --amber-soft: #302410;
+    --good: #7fd6b4;
+    --good-soft: #123027;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Public Sans", -apple-system, "Segoe UI", sans-serif;
+    padding-inline: 20px;
+    padding-block: 32px 64px;
+    line-height: 1.65;
+  }
+  h1, h2, .eyebrow {
+    font-family: "Source Serif 4", Georgia, serif;
+  }
+  .page {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  header.hero {
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 2.5rem);
+    margin: 0 0 10px;
+    text-wrap: balance;
+    font-weight: 600;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 60ch;
+  }
+  .meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .meta strong { color: var(--text); }
+
+  .callout {
+    background: var(--amber-soft);
+    border: 1px solid color-mix(in srgb, var(--amber) 35%, var(--border));
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 36px;
+    font-size: 0.95rem;
+  }
+  .callout strong { color: var(--amber); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 640px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { display: none; }
+  }
+  nav.toc {
+    position: sticky;
+    top: max(24px, env(safe-area-inset-top, 0px));
+    font-size: 0.85rem;
+  }
+  nav.toc a {
+    display: block;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 5px 0;
+    border-left: 2px solid transparent;
+    padding-left: 10px;
+  }
+  nav.toc a:hover { color: var(--accent); border-left-color: var(--accent); }
+
+  section.article {
+    padding-block: 22px;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 24px;
+  }
+  section.article:last-of-type { border-bottom: none; }
+  .num {
+    font-family: "Source Serif 4", Georgia, serif;
+    color: var(--accent);
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin: 4px 0 12px;
+    font-weight: 600;
+  }
+  p { margin: 0 0 12px; }
+  ul { margin: 0 0 12px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin: 14px 0;
+  }
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--good-soft);
+    color: var(--good);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .badge svg { width: 14px; height: 14px; }
+
+  code, .mono {
+    font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-size: 0.9em;
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+
+<div class="page">
+  <header class="hero">
+    <span class="eyebrow">Politique de confidentialité</span>
+    <h1>Fiches VTC</h1>
+    <p class="subtitle">Application de révision pour l'examen d'accès à la profession de VTC. Cette page explique quelles données l'application traite, où elles vivent, et pourquoi il y en a très peu.</p>
+    <div class="meta">
+      <span>Dernière mise à jour : <strong>27 septembre 2026</strong></span>
+      <span>Application : <strong>com.fichesvtc.app</strong></span>
+    </div>
+    <div class="badge-row">
+      <span class="badge">✓ Aucune donnée personnelle collectée</span>
+      <span class="badge">✓ Aucune publicité</span>
+      <span class="badge">✓ Aucun traceur ni SDK d'analyse</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Sommaire">
+      <a href="#objet">1. Objet</a>
+      <a href="#editeur">2. Éditeur</a>
+      <a href="#pas-de-collecte">3. Ce que nous ne collectons pas</a>
+      <a href="#appareil">4. Sur votre appareil</a>
+      <a href="#achats">5. Achats intégrés</a>
+      <a href="#pub">6. Publicité et suivi</a>
+      <a href="#permissions">7. Permissions</a>
+      <a href="#conservation">8. Conservation</a>
+      <a href="#droits">9. Vos droits</a>
+      <a href="#mineurs">10. Mineurs</a>
+      <a href="#modifications">11. Modifications</a>
+      <a href="#contact">12. Contact</a>
+    </nav>
+
+    <main>
+      <section class="article" id="objet">
+        <span class="num">01</span>
+        <h2>Objet</h2>
+        <p>Fiches VTC est une application Android de révision pour l'examen français d'accès à la profession de conducteur VTC (voiture de transport avec chauffeur). Elle fonctionne <strong>entièrement hors connexion</strong> : les fiches, les auto-évaluations et leurs corrigés sont installés avec l'application, pas téléchargés depuis un serveur.</p>
+        <p>Cette politique décrit les données traitées par l'application elle-même. Elle ne couvre pas les services de Google (Play Store, Google Play Billing, système Android), régis par la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">politique de confidentialité de Google</a>.</p>
+      </section>
+
+      <section class="article" id="editeur">
+        <span class="num">02</span>
+        <h2>Éditeur de l'application</h2>
+        <p>Fiches VTC est éditée par <span class="mono">Dhunzi apps</span>, développeur indépendant. Coordonnées de contact : voir article 12.</p>
+      </section>
+
+      <section class="article" id="pas-de-collecte">
+        <span class="num">03</span>
+        <h2>Ce que nous ne collectons pas</h2>
+        <p>L'application ne demande ni compte, ni connexion, ni inscription. Elle ne collecte, ne transmet et ne stocke sur aucun serveur :</p>
+        <ul>
+          <li>votre nom, adresse e-mail, numéro de téléphone ou identité ;</li>
+          <li>votre localisation ;</li>
+          <li>vos contacts, photos ou fichiers ;</li>
+          <li>un identifiant publicitaire ou un identifiant d'appareil à des fins de suivi.</li>
+        </ul>
+        <p>Aucun de ces éléments ne transite par nos services, pour la simple raison que nous n'exploitons aucun serveur relié à l'application.</p>
+      </section>
+
+      <section class="article" id="appareil">
+        <span class="num">04</span>
+        <h2>Données stockées sur votre appareil</h2>
+        <p>Pour votre confort, l'application enregistre localement, dans l'espace de stockage privé de l'application sur votre téléphone :</p>
+        <ul>
+          <li>votre progression (chapitres lus, dernière position de lecture) ;</li>
+          <li>vos scores aux auto-évaluations et les questions à retravailler ;</li>
+          <li>vos chapitres favoris ;</li>
+          <li>vos préférences d'affichage (mode nuit, taille du texte).</li>
+        </ul>
+        <div class="card">
+          Ces informations restent <strong>uniquement sur votre appareil</strong>. Elles ne sont jamais envoyées à nous, à Google ou à un tiers. Elles disparaissent si vous désinstallez l'application ou effacez ses données depuis les réglages Android.
+        </div>
+      </section>
+
+      <section class="article" id="achats">
+        <span class="num">05</span>
+        <h2>Achats intégrés</h2>
+        <p>Le déblocage complet des fiches est un achat unique traité par <strong>Google Play Billing</strong>. La transaction (moyen de paiement, facturation) est intégralement gérée par Google : nous ne voyons et ne stockons jamais votre numéro de carte ou vos informations de paiement.</p>
+        <p>Google nous transmet uniquement la confirmation que l'achat a été effectué, afin que l'application puisse débloquer le contenu correspondant sur votre appareil.</p>
+      </section>
+
+      <section class="article" id="pub">
+        <span class="num">06</span>
+        <h2>Publicité et suivi</h2>
+        <p>L'application n'affiche aucune publicité et n'intègre aucun kit de développement (SDK) publicitaire, d'analyse d'audience ou de suivi comportemental. Aucune mesure d'audience n'est réalisée à ce jour.</p>
+      </section>
+
+      <section class="article" id="permissions">
+        <span class="num">07</span>
+        <h2>Permissions et accès réseau</h2>
+        <p>L'application ne demande aucune permission Android sensible (pas d'accès aux contacts, à la localisation, à la caméra ou au microphone). Un accès réseau minimal est utilisé exclusivement par la bibliothèque Google Play Billing pour traiter les achats ; il n'est pas utilisé pour transmettre vos données personnelles.</p>
+      </section>
+
+      <section class="article" id="conservation">
+        <span class="num">08</span>
+        <h2>Sécurité et conservation</h2>
+        <p>Comme aucune donnée personnelle n'est collectée par nos soins, il n'existe pas de base de données à sécuriser ou à conserver de notre côté. Les données locales décrites à l'article 4 sont protégées par le système de bac à sable (sandboxing) d'Android, propre à chaque application.</p>
+      </section>
+
+      <section class="article" id="droits">
+        <span class="num">09</span>
+        <h2>Vos droits</h2>
+        <p>Le règlement général sur la protection des données (RGPD) s'applique aux données à caractère personnel. Comme nous n'en collectons pas, la plupart des droits qu'il prévoit (accès, rectification, effacement, portabilité) n'ont pas d'objet auprès de nous.</p>
+        <p>Vous gardez à tout moment un contrôle total et immédiat sur les données locales de l'article 4 : elles s'effacent en désinstallant l'application ou en vidant son cache depuis les réglages de votre téléphone.</p>
+        <p>Pour toute question relative à vos achats, adressez-vous au support Google Play, seul habilité à traiter les données de paiement.</p>
+      </section>
+
+      <section class="article" id="mineurs">
+        <span class="num">10</span>
+        <h2>Mineurs</h2>
+        <p>Cette application s'adresse aux personnes préparant un examen professionnel de conduite et n'est pas conçue pour les enfants. Elle ne collectant aucune donnée personnelle, aucun traitement spécifique aux mineurs n'est mis en œuvre.</p>
+      </section>
+
+      <section class="article" id="modifications">
+        <span class="num">11</span>
+        <h2>Modifications de cette politique</h2>
+        <p>Cette politique peut être mise à jour, notamment si une fonctionnalité future venait à traiter des données différemment (par exemple l'ajout d'une sauvegarde en ligne). La date en haut de cette page indique la version en vigueur ; toute évolution significative sera signalée dans les notes de mise à jour de l'application.</p>
+      </section>
+
+      <section class="article" id="contact">
+        <span class="num">12</span>
+        <h2>Contact</h2>
+        <p>Pour toute question sur cette politique ou sur l'application, écrivez à :</p>
+        <p class="mono" style="font-size:1.05rem; display:inline-block; margin-top:4px;">contact@accessoires-classe-a.fr</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <span>Fiches VTC — document de référence pour la fiche Google Play</span>
+    <span>Version 1.0 · 27/09/2026</span>
+  </footer>
+</div>
